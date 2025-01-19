@@ -55,6 +55,16 @@ const Index = () => {
                   <span className="text-3xl">🎨</span>
                 </div>
               </FloatingElement>
+              <FloatingElement delay={0.8} className="absolute top-10 right-20">
+                <div className="w-24 h-24 bg-white rounded-2xl shadow-lg flex items-center justify-center">
+                  <span className="text-3xl">🌳</span>
+                </div>
+              </FloatingElement>
+              <FloatingElement delay={1.0} className="absolute top-40 right-0">
+                <div className="w-28 h-28 bg-red-100 rounded-full shadow-lg flex items-center justify-center">
+                  <span className="text-3xl">🚌</span>
+                </div>
+              </FloatingElement>
             </div>
           </div>
         </div>
