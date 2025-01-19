@@ -12,13 +12,13 @@ const Navigation = () => {
           whileHover={{ scale: 1.1 }}
           className="text-2xl font-bold text-secondary"
         >
-          KidsApp
+          Portfolio
         </motion.div>
         <div className="flex gap-6">
-          {["Home", "About", "Contact"].map((item) => (
+          {["About", "Projects", "Skills", "Contact"].map((item) => (
             <motion.a
               key={item}
-              href="#"
+              href={`#${item.toLowerCase()}`}
               whileHover={{ scale: 1.1 }}
               className="text-gray-600 hover:text-secondary transition-colors"
             >
