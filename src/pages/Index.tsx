@@ -19,7 +19,7 @@ const Index = () => {
             >
               <h1 className="text-5xl md:text-7xl font-bold mb-6 text-gray-800">
                 Hi, I'm
-                <span className="text-secondary block">Your Name</span>
+                <span className="text-secondary block">Vedullapalli Durgarao</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8">
                 Full Stack Developer passionate about creating beautiful and functional web applications
@@ -85,7 +85,7 @@ const Index = () => {
           >
             <h2 className="text-4xl font-bold mb-12 text-secondary">Skills</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-              {["React", "Next.js", "TypeScript", "Node.js", "Tailwind CSS", "MongoDB", "GraphQL", "AWS"].map((skill) => (
+              {["React", "Next.js", "TypeScript", "Node.js", "Tailwind CSS", "MongoDB", "GraphQL", ".NET", "AWS"].map((skill) => (
                 <motion.div
                   key={skill}
                   whileHover={{ scale: 1.05 }}
