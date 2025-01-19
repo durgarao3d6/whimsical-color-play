@@ -25,11 +25,11 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#F2FCE2",
+          DEFAULT: "#e6f4ea",
           foreground: "#000000",
         },
         secondary: {
-          DEFAULT: "#ea384c",
+          DEFAULT: "#34a853",
           foreground: "#ffffff",
         },
         accent: {
@@ -55,6 +55,9 @@ export default {
       animation: {
         "float": "float 6s ease-in-out infinite",
         "bounce-slight": "bounce-slight 3s ease-in-out infinite",
+      },
+      backgroundImage: {
+        'green-gradient': 'linear-gradient(90deg, hsla(139, 70%, 75%, 1) 0%, hsla(63, 90%, 76%, 1) 100%)',
       },
     },
   },

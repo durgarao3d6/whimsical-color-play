@@ -4,7 +4,7 @@ import FloatingElement from "../components/FloatingElement";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-primary">
+    <div className="min-h-screen bg-gradient-to-br from-[#e6f4ea] to-white">
       <Navigation />
       
       <main className="container mx-auto px-4">
@@ -28,7 +28,7 @@ const Index = () => {
                 href="#contact"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-block bg-secondary text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow"
+                className="inline-block bg-green-gradient text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow"
               >
                 Get in Touch
               </motion.a>
@@ -46,7 +46,7 @@ const Index = () => {
                 </div>
               </FloatingElement>
               <FloatingElement delay={0.4} className="absolute top-40 left-20">
-                <div className="w-40 h-40 bg-secondary rounded-3xl shadow-lg flex items-center justify-center">
+                <div className="w-40 h-40 bg-green-gradient rounded-3xl shadow-lg flex items-center justify-center">
                   <span className="text-5xl">⚡</span>
                 </div>
               </FloatingElement>
@@ -144,7 +144,7 @@ const Index = () => {
               href="mailto:your.email@example.com"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-block bg-secondary text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow"
+              className="inline-block bg-green-gradient text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow"
             >
               Send Email
             </motion.a>
