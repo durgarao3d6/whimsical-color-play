@@ -92,9 +92,11 @@ const Index = () => {
                       <motion.div
                         animate={{ y: [-2, 2, -2] }}
                         transition={{ repeat: Infinity, duration: 1.5 }}
+                        className="max-w-[150px]"
                       >
                         <p className="font-bold text-gray-800">2018</p>
                         <p className="text-sm text-gray-600">.NET</p>
+                        <p className="text-xs text-gray-500 mt-1">Started journey with .NET Framework, building enterprise applications</p>
                       </motion.div>
                     </div>
                   </div>
@@ -106,9 +108,11 @@ const Index = () => {
                       <motion.div
                         animate={{ y: [-2, 2, -2] }}
                         transition={{ repeat: Infinity, duration: 1.5, delay: 0.2 }}
+                        className="max-w-[150px]"
                       >
                         <p className="font-bold text-gray-800">2024</p>
                         <p className="text-sm text-gray-600">React & .NET Core</p>
+                        <p className="text-xs text-gray-500 mt-1">Mastered modern web development with React and .NET Core microservices</p>
                       </motion.div>
                     </div>
                   </div>
@@ -120,9 +124,11 @@ const Index = () => {
                       <motion.div
                         animate={{ y: [-2, 2, -2] }}
                         transition={{ repeat: Infinity, duration: 1.5, delay: 0.4 }}
+                        className="max-w-[150px]"
                       >
                         <p className="font-bold text-gray-800">2025</p>
                         <p className="text-sm text-gray-600">Next.js & AI</p>
+                        <p className="text-xs text-gray-500 mt-1">Exploring Next.js and AI integration for innovative solutions</p>
                       </motion.div>
                     </div>
                   </div>
