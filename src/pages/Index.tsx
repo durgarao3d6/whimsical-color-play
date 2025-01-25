@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import Navigation from "../components/Navigation";
 import FloatingElement from "../components/FloatingElement";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -197,7 +198,12 @@ const Index = () => {
                     A brief description of the project and the technologies used.
                   </p>
                   <div className="flex gap-4">
-                    <a href="#" className="text-secondary hover:underline">View Demo</a>
+                    <Link 
+                      to="/project-demo" 
+                      className="text-secondary hover:underline"
+                    >
+                      View Demo
+                    </Link>
                     <a href="#" className="text-secondary hover:underline">GitHub</a>
                   </div>
                 </motion.div>
