@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import Navigation from "../components/Navigation";
 
 const ProjectDemo = () => {
+  const titleText = "Project Title".split("");
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e6f4ea] via-white to-[#d3e4fd]">
       <Navigation />
@@ -14,9 +16,26 @@ const ProjectDemo = () => {
           transition={{ duration: 0.6 }}
           className="mb-20"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-secondary to-[#0EA5E9] bg-clip-text text-transparent">
-            Project Title
-          </h1>
+          <div className="overflow-hidden">
+            <motion.div className="flex justify-center mb-6">
+              {titleText.map((letter, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ y: 100 }}
+                  animate={{ y: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.1,
+                    ease: [0.6, 0.01, -0.05, 0.95]
+                  }}
+                  className="text-4xl md:text-5xl font-bold inline-block bg-gradient-to-r from-secondary to-[#0EA5E9] bg-clip-text text-transparent"
+                >
+                  {letter === " " ? "\u00A0" : letter}
+                </motion.span>
+              ))}
+            </motion.div>
+          </div>
+          
           <p className="text-lg text-gray-600 mb-8 animate-fade-in">
             A comprehensive description of the project, its goals, and the problems it solves.
             This section provides an overview of the technical stack and implementation details.
