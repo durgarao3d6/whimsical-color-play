@@ -3,7 +3,7 @@ import Navigation from "../components/Navigation";
 
 const ProjectDemo = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e6f4ea] to-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#e6f4ea] via-white to-[#d3e4fd]">
       <Navigation />
       
       <main className="container mx-auto px-4 py-20">
@@ -11,40 +11,50 @@ const ProjectDemo = () => {
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
           className="mb-20"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">Project Title</h1>
-          <p className="text-lg text-gray-600 mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-secondary to-[#0EA5E9] bg-clip-text text-transparent">
+            Project Title
+          </h1>
+          <p className="text-lg text-gray-600 mb-8 animate-fade-in">
             A comprehensive description of the project, its goals, and the problems it solves.
             This section provides an overview of the technical stack and implementation details.
           </p>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-semibold mb-3">Tech Stack</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li>React</li>
-                <li>TypeScript</li>
-                <li>Tailwind CSS</li>
-                <li>Node.js</li>
-              </ul>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-semibold mb-3">Key Features</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li>Responsive Design</li>
-                <li>Real-time Updates</li>
-                <li>User Authentication</li>
-                <li>Data Visualization</li>
-              </ul>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-md">
-              <h3 className="text-xl font-semibold mb-3">Timeline</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li>Started: Jan 2024</li>
-                <li>Duration: 3 months</li>
-                <li>Current Status: Active</li>
-              </ul>
-            </div>
+            {[
+              {
+                title: "Tech Stack",
+                items: ["React", "TypeScript", "Tailwind CSS", "Node.js"]
+              },
+              {
+                title: "Key Features",
+                items: ["Responsive Design", "Real-time Updates", "User Authentication", "Data Visualization"]
+              },
+              {
+                title: "Timeline",
+                items: ["Started: Jan 2024", "Duration: 3 months", "Current Status: Active"]
+              }
+            ].map((card, index) => (
+              <motion.div
+                key={card.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2, duration: 0.5 }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300"
+              >
+                <h3 className="text-xl font-semibold mb-3 text-secondary">{card.title}</h3>
+                <ul className="space-y-2 text-gray-600">
+                  {card.items.map((item) => (
+                    <li key={item} className="flex items-center space-x-2">
+                      <span className="w-1.5 h-1.5 bg-secondary rounded-full" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
           </div>
         </motion.section>
 
@@ -52,32 +62,47 @@ const ProjectDemo = () => {
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
           className="mb-20"
         >
-          <h2 className="text-3xl font-bold mb-6 text-gray-800">Video Demonstration</h2>
-          <div className="aspect-w-16 aspect-h-9 bg-gray-100 rounded-xl overflow-hidden">
+          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] bg-clip-text text-transparent">
+            Video Demonstration
+          </h2>
+          <motion.div 
+            className="aspect-w-16 aspect-h-9 bg-white/80 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-white/20"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.3 }}
+          >
             <div className="flex items-center justify-center">
               <p className="text-gray-500">Video placeholder - Add your demo video here</p>
             </div>
-          </div>
+          </motion.div>
         </motion.section>
 
         {/* Detailed Features */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
         >
-          <h2 className="text-3xl font-bold mb-6 text-gray-800">Detailed Features</h2>
+          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#F97316] to-[#FEC6A1] bg-clip-text text-transparent">
+            Detailed Features
+          </h2>
           <div className="grid md:grid-cols-2 gap-6">
             {[1, 2, 3, 4].map((feature) => (
               <motion.div
                 key={feature}
-                whileHover={{ y: -5 }}
-                className="bg-white p-6 rounded-xl shadow-md"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: feature * 0.1 }}
+                whileHover={{ 
+                  y: -5,
+                  boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)",
+                  transition: { duration: 0.2 }
+                }}
+                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20 hover:border-secondary/20 transition-all duration-300"
               >
-                <h3 className="text-xl font-semibold mb-3">Feature {feature}</h3>
+                <h3 className="text-xl font-semibold mb-3 text-secondary">Feature {feature}</h3>
                 <p className="text-gray-600">
                   Detailed description of the feature, its benefits, and how it enhances
                   the user experience. Include technical details and implementation highlights.
