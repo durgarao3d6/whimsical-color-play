@@ -1,130 +1,90 @@
 import { motion } from "framer-motion";
 import Navigation from "../components/Navigation";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const ProjectDemo = () => {
-  const features = [
-    {
-      title: "Modern Tech Stack",
-      description: "Built with React, TypeScript, and Tailwind CSS for a robust and maintainable codebase.",
-      icon: "⚛️"
-    },
-    {
-      title: "Responsive Design",
-      description: "Fully responsive layout that works seamlessly across all devices and screen sizes.",
-      icon: "📱"
-    },
-    {
-      title: "Performance Optimized",
-      description: "Optimized for speed and performance with efficient code splitting and lazy loading.",
-      icon: "⚡"
-    },
-    {
-      title: "Secure Authentication",
-      description: "Implements industry-standard security practices with JWT authentication.",
-      icon: "🔒"
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e6f4ea] to-white">
       <Navigation />
       
-      <main className="container mx-auto px-4 pt-32">
-        {/* Hero Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-5xl font-bold text-gray-800 mb-6">
-            Project Demo
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            A comprehensive demonstration of our latest web application showcasing modern technologies and best practices.
-          </p>
-        </motion.div>
-
+      <main className="container mx-auto px-4 py-20">
         {/* Project Description */}
-        <section className="mb-20">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-3xl text-secondary">Project Overview</CardTitle>
-            </CardHeader>
-            <CardContent className="prose prose-lg">
-              <p className="text-gray-600">
-                This project demonstrates the implementation of a modern web application using React and TypeScript. 
-                It showcases best practices in frontend development, including component architecture, state management, 
-                and responsive design principles.
-              </p>
-              <div className="flex gap-4 mt-6">
-                <Button variant="secondary">
-                  View Source
-                </Button>
-                <Button variant="outline">
-                  Live Demo
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Video Demo Section */}
-        <section className="mb-20">
-          <h2 className="text-3xl font-bold text-secondary mb-8">Video Demonstration</h2>
-          <div className="aspect-video bg-gray-100 rounded-xl overflow-hidden shadow-lg">
-            <iframe
-              className="w-full h-full"
-              src="https://www.youtube.com/embed/placeholder"
-              title="Project Demo Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section className="mb-20">
-          <h2 className="text-3xl font-bold text-secondary mb-12 text-center">Key Features</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card className="h-full hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center gap-4">
-                      <span className="text-4xl">{feature.icon}</span>
-                      <CardTitle>{feature.title}</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">{feature.description}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* Call to Action */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-20"
+          className="mb-20"
         >
-          <h2 className="text-3xl font-bold text-secondary mb-6">Ready to Get Started?</h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Explore the full potential of our project and see how it can benefit your needs.
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">Project Title</h1>
+          <p className="text-lg text-gray-600 mb-8">
+            A comprehensive description of the project, its goals, and the problems it solves.
+            This section provides an overview of the technical stack and implementation details.
           </p>
-          <Button variant="secondary" size="lg">
-            Schedule a Demo
-          </Button>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-semibold mb-3">Tech Stack</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li>React</li>
+                <li>TypeScript</li>
+                <li>Tailwind CSS</li>
+                <li>Node.js</li>
+              </ul>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-semibold mb-3">Key Features</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li>Responsive Design</li>
+                <li>Real-time Updates</li>
+                <li>User Authentication</li>
+                <li>Data Visualization</li>
+              </ul>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-semibold mb-3">Timeline</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li>Started: Jan 2024</li>
+                <li>Duration: 3 months</li>
+                <li>Current Status: Active</li>
+              </ul>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Video Demo */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mb-20"
+        >
+          <h2 className="text-3xl font-bold mb-6 text-gray-800">Video Demonstration</h2>
+          <div className="aspect-w-16 aspect-h-9 bg-gray-100 rounded-xl overflow-hidden">
+            <div className="flex items-center justify-center">
+              <p className="text-gray-500">Video placeholder - Add your demo video here</p>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Detailed Features */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <h2 className="text-3xl font-bold mb-6 text-gray-800">Detailed Features</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {[1, 2, 3, 4].map((feature) => (
+              <motion.div
+                key={feature}
+                whileHover={{ y: -5 }}
+                className="bg-white p-6 rounded-xl shadow-md"
+              >
+                <h3 className="text-xl font-semibold mb-3">Feature {feature}</h3>
+                <p className="text-gray-600">
+                  Detailed description of the feature, its benefits, and how it enhances
+                  the user experience. Include technical details and implementation highlights.
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </motion.section>
       </main>
     </div>
