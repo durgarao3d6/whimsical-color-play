@@ -1,8 +1,45 @@
 import { motion } from "framer-motion";
 import Navigation from "../components/Navigation";
 
+const projects = [
+  {
+    id: 1,
+    title: "Task Tracker React",
+    description: "A comprehensive task management application built with React and modern web technologies. Features include task creation, deadline management, priority settings, and real-time updates.",
+    techStack: ["React", "TypeScript", "Tailwind CSS", "Node.js"],
+    keyFeatures: [
+      "Drag-and-drop task organization",
+      "Real-time updates",
+      "Priority management",
+      "Deadline notifications"
+    ],
+    timeline: [
+      "Started: Jan 2024",
+      "Duration: 2 months",
+      "Current Status: Active"
+    ]
+  },
+  {
+    id: 2,
+    title: "React & .NET Chat",
+    description: "A real-time chat application leveraging React for the frontend and .NET Core for the backend. Supports multiple chat rooms, file sharing, and user presence indicators.",
+    techStack: ["React", "ASP.NET Core", "SignalR", "SQL Server"],
+    keyFeatures: [
+      "Real-time messaging",
+      "File sharing",
+      "User presence",
+      "Chat history"
+    ],
+    timeline: [
+      "Started: Mar 2024",
+      "Duration: 3 months",
+      "Current Status: In Development"
+    ]
+  }
+];
+
 const ProjectDemo = () => {
-  const titleText = "Project Title".split("");
+  const titleText = projects[0].title.split("");
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e6f4ea] via-white to-[#d3e4fd]">
@@ -37,22 +74,21 @@ const ProjectDemo = () => {
           </div>
           
           <p className="text-lg text-gray-600 mb-8 animate-fade-in">
-            A comprehensive description of the project, its goals, and the problems it solves.
-            This section provides an overview of the technical stack and implementation details.
+            {projects[0].description}
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 title: "Tech Stack",
-                items: ["React", "TypeScript", "Tailwind CSS", "Node.js"]
+                items: projects[0].techStack
               },
               {
                 title: "Key Features",
-                items: ["Responsive Design", "Real-time Updates", "User Authentication", "Data Visualization"]
+                items: projects[0].keyFeatures
               },
               {
                 title: "Timeline",
-                items: ["Started: Jan 2024", "Duration: 3 months", "Current Status: Active"]
+                items: projects[0].timeline
               }
             ].map((card, index) => (
               <motion.div
@@ -108,12 +144,12 @@ const ProjectDemo = () => {
             Detailed Features
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {[1, 2, 3, 4].map((feature) => (
+            {projects[0].keyFeatures.map((feature, index) => (
               <motion.div
                 key={feature}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: feature * 0.1 }}
+                transition={{ delay: index * 0.1 }}
                 whileHover={{ 
                   y: -5,
                   boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)",
@@ -121,10 +157,10 @@ const ProjectDemo = () => {
                 }}
                 className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20 hover:border-secondary/20 transition-all duration-300"
               >
-                <h3 className="text-xl font-semibold mb-3 text-secondary">Feature {feature}</h3>
+                <h3 className="text-xl font-semibold mb-3 text-secondary">{feature}</h3>
                 <p className="text-gray-600">
-                  Detailed description of the feature, its benefits, and how it enhances
-                  the user experience. Include technical details and implementation highlights.
+                  Detailed description of {feature.toLowerCase()}, its benefits, and how it enhances
+                  the user experience in the Task Tracker application.
                 </p>
               </motion.div>
             ))}
