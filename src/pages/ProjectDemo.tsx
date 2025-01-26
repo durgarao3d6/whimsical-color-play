@@ -39,15 +39,37 @@ const projects = [
 ];
 
 const ProjectDemo = () => {
-  const titleText = projects[0].title.split("");
+  const [currentProjectIndex, setCurrentProjectIndex] = React.useState(0);
+  const currentProject = projects[currentProjectIndex];
+  const titleText = currentProject.title.split("");
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e6f4ea] via-white to-[#d3e4fd]">
       <Navigation />
       
       <main className="container mx-auto px-4 py-20">
+        {/* Project Selection */}
+        <div className="flex justify-center gap-4 mb-10">
+          {projects.map((project, index) => (
+            <motion.button
+              key={project.id}
+              onClick={() => setCurrentProjectIndex(index)}
+              className={`px-6 py-3 rounded-lg transition-all ${
+                currentProjectIndex === index
+                  ? "bg-secondary text-white shadow-lg scale-105"
+                  : "bg-white/80 text-gray-600 hover:bg-secondary/10"
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {project.title}
+            </motion.button>
+          ))}
+        </div>
+
         {/* Project Description */}
         <motion.section
+          key={currentProject.id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -74,21 +96,21 @@ const ProjectDemo = () => {
           </div>
           
           <p className="text-lg text-gray-600 mb-8 animate-fade-in">
-            {projects[0].description}
+            {currentProject.description}
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 title: "Tech Stack",
-                items: projects[0].techStack
+                items: currentProject.techStack
               },
               {
                 title: "Key Features",
-                items: projects[0].keyFeatures
+                items: currentProject.keyFeatures
               },
               {
                 title: "Timeline",
-                items: projects[0].timeline
+                items: currentProject.timeline
               }
             ].map((card, index) => (
               <motion.div
@@ -144,7 +166,7 @@ const ProjectDemo = () => {
             Detailed Features
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {projects[0].keyFeatures.map((feature, index) => (
+            {currentProject.keyFeatures.map((feature, index) => (
               <motion.div
                 key={feature}
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -160,7 +182,7 @@ const ProjectDemo = () => {
                 <h3 className="text-xl font-semibold mb-3 text-secondary">{feature}</h3>
                 <p className="text-gray-600">
                   Detailed description of {feature.toLowerCase()}, its benefits, and how it enhances
-                  the user experience in the Task Tracker application.
+                  the user experience in the {currentProject.title} application.
                 </p>
               </motion.div>
             ))}
