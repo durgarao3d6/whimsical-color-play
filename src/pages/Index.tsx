@@ -11,7 +11,7 @@ const Index = () => {
       <main className="container mx-auto px-4">
         {/* Hero Section */}
         <div className="pt-32 pb-20 relative">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10 mb-32">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
             <motion.div 
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -35,106 +35,99 @@ const Index = () => {
               </motion.a>
             </motion.div>
 
-            <div className="flex-1 relative h-[500px]">
-              <FloatingElement delay={0} className="absolute top-0 left-0">
-                <div className="w-32 h-32 bg-white rounded-2xl shadow-lg flex items-center justify-center">
-                  <span className="text-4xl">💻</span>
-                </div>
-              </FloatingElement>
-              <FloatingElement delay={0.2} className="absolute top-20 left-40">
-                <div className="w-24 h-24 bg-secondary/20 rounded-full shadow-lg flex items-center justify-center">
-                  <span className="text-3xl">🚀</span>
-                </div>
-              </FloatingElement>
-              <FloatingElement delay={0.4} className="absolute top-40 left-20">
-                <div className="w-40 h-40 bg-green-gradient rounded-3xl shadow-lg flex items-center justify-center">
-                  <span className="text-5xl">⚡</span>
-                </div>
-              </FloatingElement>
-              <FloatingElement delay={0.6} className="absolute top-60 left-60">
-                <div className="w-28 h-28 bg-white/80 rounded-full shadow-lg flex items-center justify-center">
-                  <span className="text-3xl">🎨</span>
-                </div>
-              </FloatingElement>
-              <FloatingElement delay={0.8} className="absolute top-10 right-20">
-                <div className="w-24 h-24 bg-white rounded-2xl shadow-lg flex items-center justify-center">
-                  <span className="text-3xl">🌳</span>
-                </div>
-              </FloatingElement>
-              <FloatingElement delay={1.0} className="absolute top-40 right-0">
-                <div className="w-28 h-28 bg-red-100 rounded-full shadow-lg flex items-center justify-center">
-                  <span className="text-3xl">🚌</span>
-                </div>
-              </FloatingElement>
-            </div>
-          </div>
-
-          {/* Timeline Road Background */}
-          <div className="relative w-full h-48 mt-8">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-full h-16 bg-gray-800 relative">
-                {/* Road markings */}
-                <div className="absolute inset-y-0 w-full flex justify-between items-center">
-                  <div className="w-full h-2 bg-white" style={{ maskImage: 'repeating-linear-gradient(to right, white 0px, white 20px, transparent 20px, transparent 40px)' }}></div>
-                </div>
+            <div className="flex-1 relative">
+              <svg className="w-full h-[300px]" viewBox="0 0 800 200">
+                {/* Curved path */}
+                <motion.path
+                  d="M 50 100 C 150 50, 250 150, 350 100 C 450 50, 550 150, 650 100 C 750 50, 850 150, 950 100"
+                  fill="none"
+                  stroke="#34a853"
+                  strokeWidth="30"
+                  strokeLinecap="round"
+                  strokeDasharray="1400"
+                  strokeDashoffset="1400"
+                  className="animate-dash"
+                />
+                {/* Dashed line overlay */}
+                <motion.path
+                  d="M 50 100 C 150 50, 250 150, 350 100 C 450 50, 550 150, 650 100 C 750 50, 850 150, 950 100"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeDasharray="10 10"
+                />
                 
-                {/* Timeline points with cars */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="absolute -top-12 left-0 flex justify-between w-full px-4"
+                {/* Timeline points */}
+                <g>
+                  {[
+                    { x: 100, y: 100, year: "2018", text: ".NET", desc: "Started with .NET" },
+                    { x: 350, y: 100, year: "2024", text: "React & .NET Core", desc: "Full Stack Development" },
+                    { x: 600, y: 100, year: "2025", text: "Next.js & AI", desc: "Future Goals" }
+                  ].map((point, index) => (
+                    <g key={index}>
+                      <motion.circle
+                        cx={point.x}
+                        cy={point.y}
+                        r="25"
+                        fill="white"
+                        stroke="#34a853"
+                        strokeWidth="2"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: index * 0.2 }}
+                      />
+                      <motion.text
+                        x={point.x}
+                        y={point.y}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fill="#34a853"
+                        fontSize="16"
+                        fontWeight="bold"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: index * 0.2 + 0.2 }}
+                      >
+                        {index + 1}
+                      </motion.text>
+                      <motion.text
+                        x={point.x}
+                        y={point.y - 40}
+                        textAnchor="middle"
+                        fill="#1a1a1a"
+                        fontSize="14"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: index * 0.2 + 0.3 }}
+                      >
+                        {point.year}
+                      </motion.text>
+                      <motion.text
+                        x={point.x}
+                        y={point.y + 40}
+                        textAnchor="middle"
+                        fill="#4a4a4a"
+                        fontSize="12"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: index * 0.2 + 0.4 }}
+                      >
+                        {point.text}
+                      </motion.text>
+                    </g>
+                  ))}
+                </g>
+
+                {/* Car icons */}
+                <motion.g
+                  initial={{ x: -50 }}
+                  animate={{ x: 700 }}
+                  transition={{ duration: 3, repeat: Infinity, repeatType: "loop" }}
                 >
-                  <div className="text-center">
-                    <div className="relative">
-                      <div className="w-12 h-12 bg-secondary rounded-full mx-auto mb-2 flex items-center justify-center">
-                        <span className="text-2xl transform -scale-x-100">🚗</span>
-                      </div>
-                      <motion.div
-                        animate={{ y: [-2, 2, -2] }}
-                        transition={{ repeat: Infinity, duration: 1.5 }}
-                        className="max-w-[150px]"
-                      >
-                        <p className="font-bold text-gray-800">2018</p>
-                        <p className="text-sm text-gray-600">.NET</p>
-                        <p className="text-xs text-gray-500 mt-1">Started journey with .NET Framework, building enterprise applications</p>
-                      </motion.div>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="relative">
-                      <div className="w-12 h-12 bg-secondary rounded-full mx-auto mb-2 flex items-center justify-center">
-                        <span className="text-2xl transform -scale-x-100">🚙</span>
-                      </div>
-                      <motion.div
-                        animate={{ y: [-2, 2, -2] }}
-                        transition={{ repeat: Infinity, duration: 1.5, delay: 0.2 }}
-                        className="max-w-[150px]"
-                      >
-                        <p className="font-bold text-gray-800">2024</p>
-                        <p className="text-sm text-gray-600">React & .NET Core</p>
-                        <p className="text-xs text-gray-500 mt-1">Mastered modern web development with React and .NET Core microservices</p>
-                      </motion.div>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="relative">
-                      <div className="w-12 h-12 bg-secondary rounded-full mx-auto mb-2 flex items-center justify-center">
-                        <span className="text-2xl transform -scale-x-100">🚓</span>
-                      </div>
-                      <motion.div
-                        animate={{ y: [-2, 2, -2] }}
-                        transition={{ repeat: Infinity, duration: 1.5, delay: 0.4 }}
-                        className="max-w-[150px]"
-                      >
-                        <p className="font-bold text-gray-800">2025</p>
-                        <p className="text-sm text-gray-600">Next.js & AI</p>
-                        <p className="text-xs text-gray-500 mt-1">Exploring Next.js and AI integration for innovative solutions</p>
-                      </motion.div>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
+                  <text x="0" y="100" fontSize="24" className="transform -scale-x-100">🚗</text>
+                </motion.g>
+              </svg>
             </div>
           </div>
         </div>
