@@ -51,16 +51,10 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
         },
-        "dash": {
-          "to": {
-            "stroke-dashoffset": "1000"
-          }
-        }
       },
       animation: {
         "float": "float 6s ease-in-out infinite",
         "bounce-slight": "bounce-slight 3s ease-in-out infinite",
-        "dash": "dash 20s linear infinite",
       },
       backgroundImage: {
         'green-gradient': 'linear-gradient(90deg, hsla(139, 70%, 75%, 1) 0%, hsla(63, 90%, 76%, 1) 100%)',
