@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import Navigation from "../components/Navigation";
 import FloatingElement from "../components/FloatingElement";
+import RecruitmentTimeline from "../components/RecruitmentTimeline";
 import { Link } from "react-router-dom";
 
 const Index = () => {
@@ -138,6 +139,22 @@ const Index = () => {
             </div>
           </div>
         </div>
+
+        {/* Timeline Section */}
+        <section className="py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-3xl mx-auto mb-12"
+          >
+            <h2 className="text-4xl font-bold mb-8 text-secondary">My Journey</h2>
+            <p className="text-lg text-gray-600">
+              Following a structured approach to growth and development in my career
+            </p>
+          </motion.div>
+          <RecruitmentTimeline />
+        </section>
 
         {/* About Section */}
         <section id="about" className="py-20">
