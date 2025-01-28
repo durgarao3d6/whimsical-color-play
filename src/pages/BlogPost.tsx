@@ -80,9 +80,9 @@ This is just the beginning of what you can do with React!`
           <h1 className="text-4xl font-bold mb-4 text-gray-900">{post.title}</h1>
           <p className="text-xl text-gray-600 mb-8">{post.description}</p>
           <div 
-            className="prose prose-lg max-w-none p-8 rounded-xl backdrop-blur-sm bg-white/30 shadow-xl border border-white/20" 
+            className="prose prose-lg max-w-none p-8 rounded-xl backdrop-blur-md bg-white/20 shadow-xl border border-white/30" 
             style={{
-              background: 'linear-gradient(109.6deg, rgba(223,234,247,0.9) 11.2%, rgba(244,248,252,0.9) 91.1%)'
+              background: 'linear-gradient(109.6deg, rgba(223,234,247,0.6) 11.2%, rgba(244,248,252,0.6) 91.1%)'
             }}
             data-color-mode="light"
           >
