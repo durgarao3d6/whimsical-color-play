@@ -79,8 +79,17 @@ This is just the beginning of what you can do with React!`
           </div>
           <h1 className="text-4xl font-bold mb-4 text-gray-900">{post.title}</h1>
           <p className="text-xl text-gray-600 mb-8">{post.description}</p>
-          <div className="prose prose-lg max-w-none" data-color-mode="light">
-            <MDEditor.Markdown source={post.content} />
+          <div 
+            className="prose prose-lg max-w-none p-8 rounded-xl backdrop-blur-sm bg-white/30 shadow-xl border border-white/20" 
+            style={{
+              background: 'linear-gradient(109.6deg, rgba(223,234,247,0.9) 11.2%, rgba(244,248,252,0.9) 91.1%)'
+            }}
+            data-color-mode="light"
+          >
+            <MDEditor.Markdown 
+              source={post.content}
+              className="!bg-transparent"
+            />
           </div>
         </div>
       </motion.article>
