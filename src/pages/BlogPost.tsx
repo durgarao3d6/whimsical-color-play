@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import MDEditor from '@uiw/react-md-editor';
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -15,27 +16,38 @@ const BlogPost = () => {
     date: "March 15, 2024",
     image: "photo-1488590528505-98d2b5aba04b",
     category: "Development",
-    content: `React is a popular JavaScript library for building user interfaces. It was developed by Facebook and has since become one of the most widely used frontend technologies.
+    content: `# Getting Started with React
 
-In this comprehensive guide, we'll cover:
+React is a popular JavaScript library for building user interfaces. It was developed by Facebook and has since become one of the most widely used frontend technologies.
 
-1. Setting up your development environment
-2. Understanding React components
-3. Working with state and props
-4. Handling user events
-5. Making API calls
+## Key Concepts
 
-React's component-based architecture makes it easy to build scalable applications. By breaking down your UI into smaller, reusable components, you can create maintainable and efficient code.
+1. Components
+2. Props
+3. State
+4. Hooks
 
-Components can be either class-based or functional, though the trend in modern React development is to use functional components with hooks. Hooks provide a way to use state and other React features without writing a class.
+### Components
 
-Let's look at a simple example:
+Components are the building blocks of React applications. They can be either class-based or functional.
 
+\`\`\`jsx
 const HelloWorld = () => {
   return <h1>Hello, World!</h1>;
 };
+\`\`\`
 
-This is just the beginning of what you can do with React. As you progress, you'll learn about more advanced concepts like context, custom hooks, and performance optimization.`
+### Props
+
+Props allow you to pass data between components:
+
+\`\`\`jsx
+const Greeting = ({ name }) => {
+  return <h1>Hello, {name}!</h1>;
+};
+\`\`\`
+
+This is just the beginning of what you can do with React!`
   };
 
   return (
@@ -67,12 +79,8 @@ This is just the beginning of what you can do with React. As you progress, you'l
           </div>
           <h1 className="text-4xl font-bold mb-4 text-gray-900">{post.title}</h1>
           <p className="text-xl text-gray-600 mb-8">{post.description}</p>
-          <div className="prose prose-lg max-w-none">
-            {post.content.split('\n\n').map((paragraph, index) => (
-              <p key={index} className="mb-6 text-gray-700 leading-relaxed">
-                {paragraph}
-              </p>
-            ))}
+          <div className="prose prose-lg max-w-none" data-color-mode="light">
+            <MDEditor.Markdown source={post.content} />
           </div>
         </div>
       </motion.article>
