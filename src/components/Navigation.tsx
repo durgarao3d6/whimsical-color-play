@@ -15,7 +15,7 @@ const Navigation = () => {
           Portfolio
         </motion.div>
         <div className="flex gap-6">
-          {["About", "Projects", "Skills", "Contact"].map((item) => (
+          {["About", "Projects", "Skills", "Blog", "Contact"].map((item) => (
             <motion.a
               key={item}
               href={`#${item.toLowerCase()}`}
