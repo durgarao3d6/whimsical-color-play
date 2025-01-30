@@ -1,4 +1,5 @@
 import * as SheetPrimitive from "@radix-ui/react-dialog"
+import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import { PanelLeft } from "lucide-react"
 import * as React from "react"
