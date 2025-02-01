@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, Send, Bot, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const FloatingChat = () => {
   const [messages, setMessages] = useState<{ text: string; sender: "user" | "bot" }[]>([
@@ -54,9 +54,10 @@ const FloatingChat = () => {
           animate={{ scale: 1 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          className="fixed bottom-4 right-4 z-50"
         >
           <Button
-            className="fixed bottom-4 right-4 h-14 w-14 rounded-full shadow-lg bg-secondary hover:bg-secondary/90"
+            className="h-14 w-14 rounded-full shadow-lg bg-secondary hover:bg-secondary/90"
             size="icon"
           >
             <MessageCircle className="h-6 w-6 text-white" />
