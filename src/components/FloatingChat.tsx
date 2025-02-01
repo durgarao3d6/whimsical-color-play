@@ -63,7 +63,7 @@ const FloatingChat = () => {
           className="fixed bottom-4 right-4 z-50"
         >
           <Button
-            className="h-14 w-14 rounded-full shadow-lg bg-secondary hover:bg-secondary/90"
+            className="h-14 w-14 rounded-full shadow-lg bg-secondary/70 hover:bg-secondary/90 backdrop-blur-sm"
             size="icon"
           >
             <MessageCircle className="h-6 w-6 text-white" />
