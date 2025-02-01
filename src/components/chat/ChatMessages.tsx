@@ -1,5 +1,6 @@
 import { Bot, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import TypingIndicator from "./TypingIndicator";
 
 interface Message {
   text: string;
