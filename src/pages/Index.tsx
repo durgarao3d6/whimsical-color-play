@@ -6,6 +6,7 @@ import ProjectsSection from "../components/sections/ProjectsSection";
 import BlogSection from "../components/sections/BlogSection";
 import ContactSection from "../components/sections/ContactSection";
 import BackToTop from "../components/BackToTop";
+import FloatingChat from "../components/FloatingChat";
 
 const Index = () => {
   return (
@@ -22,6 +23,7 @@ const Index = () => {
       </main>
 
       <BackToTop />
+      <FloatingChat />
     </div>
   );
 };
