@@ -1,13 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Send, Bot, User } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { motion, AnimatePresence } from "framer-motion";
+import { MessageCircle, Bot } from "lucide-react";
+import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
+import ChatMessages from "./chat/ChatMessages";
+import ChatInput from "./chat/ChatInput";
+
+interface Message {
+  text: string;
+  sender: "user" | "bot";
+}
 
 const FloatingChat = () => {
-  const [messages, setMessages] = useState<{ text: string; sender: "user" | "bot" }[]>([
+  const [messages, setMessages] = useState<Message[]>([
     { text: "Hi! How can I help you today?", sender: "bot" }
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -73,80 +79,14 @@ const FloatingChat = () => {
             </h2>
           </div>
           
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            <AnimatePresence>
-              {messages.map((message, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
-                >
-                  <div className="flex items-start gap-2 max-w-[80%]">
-                    {message.sender === "bot" && (
-                      <div className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center">
-                        <Bot className="h-4 w-4 text-secondary" />
-                      </div>
-                    )}
-                    <div
-                      className={`rounded-lg p-3 ${
-                        message.sender === "user"
-                          ? "bg-secondary text-white"
-                          : "bg-white shadow-sm"
-                      }`}
-                    >
-                      {message.text}
-                    </div>
-                    {message.sender === "user" && (
-                      <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
-                        <User className="h-4 w-4 text-white" />
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-              {isTyping && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-2"
-                >
-                  <div className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center">
-                    <Bot className="h-4 w-4 text-secondary" />
-                  </div>
-                  <div className="bg-white rounded-lg p-3 shadow-sm">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-secondary/40 rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
-                      <span className="w-2 h-2 bg-secondary/40 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
-                      <span className="w-2 h-2 bg-secondary/40 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }} />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <div ref={messagesEndRef} />
-          </div>
-
-          <form onSubmit={handleSendMessage} className="border-t p-4 bg-white">
-            <div className="flex gap-2">
-              <Input
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-1"
-              />
-              <Button 
-                type="submit" 
-                size="icon"
-                className="bg-secondary hover:bg-secondary/90"
-                disabled={!inputValue.trim()}
-              >
-                <Send className="h-4 w-4" />
-              </Button>
-            </div>
-          </form>
+          <ChatMessages messages={messages} isTyping={isTyping} />
+          <div ref={messagesEndRef} />
+          
+          <ChatInput 
+            value={inputValue}
+            onChange={setInputValue}
+            onSubmit={handleSendMessage}
+          />
         </div>
       </SheetContent>
     </Sheet>
