@@ -53,43 +53,47 @@ const FloatingChat = () => {
   };
 
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="fixed bottom-4 right-4 z-50"
-        >
-          <Button
-            className="h-14 w-14 rounded-full shadow-lg bg-secondary/70 hover:bg-secondary/90 backdrop-blur-sm"
-            size="icon"
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end">
+      <Sheet>
+        <SheetTrigger asChild>
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
-            <MessageCircle className="h-6 w-6 text-white" />
-          </Button>
-        </motion.div>
-      </SheetTrigger>
-      <SheetContent side="right" className="w-[90vw] sm:w-[400px] p-0">
-        <div className="flex flex-col h-full bg-primary/5">
-          <div className="p-4 border-b bg-white">
-            <h2 className="text-lg font-semibold flex items-center gap-2">
-              <Bot className="h-5 w-5 text-secondary" />
-              Chat Support
-            </h2>
+            <Button
+              className="h-14 w-14 rounded-full shadow-lg bg-secondary/70 hover:bg-secondary/90 backdrop-blur-sm"
+              size="icon"
+            >
+              <MessageCircle className="h-6 w-6 text-white" />
+            </Button>
+          </motion.div>
+        </SheetTrigger>
+        <SheetContent 
+          side="right" 
+          className="w-[90vw] sm:w-[400px] p-0 mb-20 mr-4 rounded-2xl border-none shadow-2xl"
+        >
+          <div className="flex flex-col h-full bg-primary/5 rounded-2xl overflow-hidden">
+            <div className="p-4 border-b bg-white">
+              <h2 className="text-lg font-semibold flex items-center gap-2">
+                <Bot className="h-5 w-5 text-secondary" />
+                Chat Support
+              </h2>
+            </div>
+            
+            <ChatMessages messages={messages} isTyping={isTyping} />
+            <div ref={messagesEndRef} />
+            
+            <ChatInput 
+              value={inputValue}
+              onChange={setInputValue}
+              onSubmit={handleSendMessage}
+            />
           </div>
-          
-          <ChatMessages messages={messages} isTyping={isTyping} />
-          <div ref={messagesEndRef} />
-          
-          <ChatInput 
-            value={inputValue}
-            onChange={setInputValue}
-            onSubmit={handleSendMessage}
-          />
-        </div>
-      </SheetContent>
-    </Sheet>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 };
 
