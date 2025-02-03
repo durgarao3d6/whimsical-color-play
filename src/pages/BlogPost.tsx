@@ -30,6 +30,7 @@ const BlogPost = () => {
   });
 
   const formatDate = (dateString: string) => {
+    if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -117,7 +118,7 @@ const BlogPost = () => {
             data-color-mode="light"
           >
             <MDEditor.Markdown 
-              source={post.content}
+              source={post.content || ''}
               className="!bg-transparent"
             />
           </div>
