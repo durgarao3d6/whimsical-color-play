@@ -9,6 +9,50 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      blog_posts: {
+        Row: {
+          author_id: string | null
+          category_slug: string | null
+          content: string | null
+          created_at: string | null
+          description: string | null
+          id: number
+          slug: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          author_id?: string | null
+          category_slug?: string | null
+          content?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          slug: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          author_id?: string | null
+          category_slug?: string | null
+          content?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          slug?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_posts_category_slug_fkey"
+            columns: ["category_slug"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
       categories: {
         Row: {
           created_at: string
@@ -59,7 +103,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_slug: {
+        Args: {
+          title: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

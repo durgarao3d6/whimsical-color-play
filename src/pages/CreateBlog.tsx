@@ -11,12 +11,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import type { Database } from "@/integrations/supabase/types";
 
-interface Category {
-  id: number;
-  name: string;
-  slug: string;
-}
+type Category = Database['public']['Tables']['categories']['Row'];
 
 const CreateBlog = () => {
   const navigate = useNavigate();
@@ -30,14 +27,12 @@ const CreateBlog = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // Check if user is authenticated
     if (!user) {
       toast.error("Please login to create a blog post");
       navigate("/auth");
       return;
     }
 
-    // Check if user is admin
     const checkAdminStatus = async () => {
       const { data: profile, error } = await supabase
         .from('profiles')
@@ -98,18 +93,18 @@ const CreateBlog = () => {
 
     setIsLoading(true);
     try {
-      // Here you would typically make an API call to save the blog post
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      
       const { error } = await supabase
         .from('blog_posts')
-        .insert([
-          {
-            title,
-            category_slug: category,
-            description,
-            content,
-            author_id: user?.id
-          }
-        ]);
+        .insert([{
+          title,
+          slug,
+          category_slug: category,
+          description,
+          content,
+          author_id: user?.id
+        }]);
 
       if (error) throw error;
 
@@ -124,7 +119,7 @@ const CreateBlog = () => {
   };
 
   if (!user || !isAdmin) {
-    return null; // Don't render anything while checking permissions
+    return null;
   }
 
   return (
