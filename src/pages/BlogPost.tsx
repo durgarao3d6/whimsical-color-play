@@ -1,54 +1,74 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import MDEditor from '@uiw/react-md-editor';
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const BlogPost = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   
-  // This would typically come from an API
-  const post = {
-    id: parseInt(id || "1"),
-    title: "Getting Started with React",
-    description: "Learn the basics of React and start building modern web applications.",
-    date: "March 15, 2024",
-    image: "photo-1488590528505-98d2b5aba04b",
-    category: "Development",
-    content: `# Getting Started with React
+  const { data: post, isLoading } = useQuery({
+    queryKey: ['blog-post', slug],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select(`
+          *,
+          categories (
+            name
+          )
+        `)
+        .eq('slug', slug)
+        .single();
 
-React is a popular JavaScript library for building user interfaces. It was developed by Facebook and has since become one of the most widely used frontend technologies.
+      if (error) throw error;
+      return data;
+    },
+  });
 
-## Key Concepts
-
-1. Components
-2. Props
-3. State
-4. Hooks
-
-### Components
-
-Components are the building blocks of React applications. They can be either class-based or functional.
-
-\`\`\`jsx
-const HelloWorld = () => {
-  return <h1>Hello, World!</h1>;
-};
-\`\`\`
-
-### Props
-
-Props allow you to pass data between components:
-
-\`\`\`jsx
-const Greeting = ({ name }) => {
-  return <h1>Hello, {name}!</h1>;
-};
-\`\`\`
-
-This is just the beginning of what you can do with React!`
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-primary">
+        <Navigation />
+        <div className="container mx-auto px-4 py-24">
+          <div className="max-w-4xl mx-auto">
+            <Skeleton className="h-[400px] w-full mb-8" />
+            <Skeleton className="h-6 w-24 mb-4" />
+            <Skeleton className="h-12 w-3/4 mb-4" />
+            <Skeleton className="h-8 w-full mb-8" />
+            <Skeleton className="h-[600px] w-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-primary">
+        <Navigation />
+        <div className="container mx-auto px-4 py-24 text-center">
+          <h1 className="text-4xl font-bold mb-4">Blog Post Not Found</h1>
+          <Link to="/blog">
+            <Button variant="outline">
+              ← Back to Blog
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-primary">
@@ -66,16 +86,18 @@ This is just the beginning of what you can do with React!`
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <img
-              src={`https://source.unsplash.com/${post.image}`}
+              src={`https://source.unsplash.com/random/800x600?${post.category_slug || 'blog'}`}
               alt={post.title}
               className="w-full h-[400px] object-cover rounded-lg shadow-lg"
             />
           </div>
           <div className="flex items-center gap-4 mb-4">
             <span className="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm">
-              {post.category}
+              {post.categories?.name || 'Uncategorized'}
             </span>
-            <span className="text-gray-500 text-sm">{post.date}</span>
+            <span className="text-gray-500 text-sm">
+              {formatDate(post.created_at)}
+            </span>
           </div>
           <h1 className="text-4xl font-bold mb-4 text-gray-900">{post.title}</h1>
           <p className="text-xl text-gray-600 mb-8">{post.description}</p>

@@ -1,34 +1,42 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const BlogSection = () => {
-  const blogPosts = [
-    {
-      id: 1,
-      title: "Getting Started with React",
-      description: "Learn the basics of React and start building modern web applications.",
-      date: "March 15, 2024",
-      image: "photo-1488590528505-98d2b5aba04b",
-      category: "Development"
+  const { data: blogPosts, isLoading } = useQuery({
+    queryKey: ['featured-blog-posts'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select(`
+          id,
+          title,
+          description,
+          slug,
+          created_at,
+          category_slug,
+          categories (
+            name
+          )
+        `)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      if (error) throw error;
+      return data;
     },
-    {
-      id: 2,
-      title: "Mastering TypeScript",
-      description: "Deep dive into TypeScript features and best practices.",
-      date: "March 10, 2024",
-      image: "photo-1518770660439-4636190af475",
-      category: "Programming"
-    },
-    {
-      id: 3,
-      title: "Web Design Trends 2024",
-      description: "Explore the latest trends in web design and UI/UX.",
-      date: "March 5, 2024",
-      image: "photo-1487058792275-0ad4aaf24ca7",
-      category: "Design"
-    }
-  ];
+  });
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
   return (
     <section id="blog" className="py-20">
@@ -45,25 +53,48 @@ const BlogSection = () => {
           </Link>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
-          {blogPosts.map((post) => (
+          {isLoading ? (
+            [...Array(3)].map((_, index) => (
+              <Card key={index} className="overflow-hidden h-full">
+                <div className="h-48">
+                  <Skeleton className="h-full w-full" />
+                </div>
+                <CardHeader>
+                  <div className="flex justify-between items-center mb-2">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-24" />
+                  </div>
+                  <Skeleton className="h-6 w-full mb-2" />
+                  <Skeleton className="h-4 w-3/4" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-4 w-24" />
+                </CardContent>
+              </Card>
+            ))
+          ) : blogPosts?.map((post) => (
             <motion.div
               key={post.id}
               whileHover={{ y: -10 }}
               transition={{ duration: 0.2 }}
             >
-              <Link to={`/blog/${post.id}`}>
+              <Link to={`/blog/${post.slug}`}>
                 <Card className="overflow-hidden h-full">
                   <div className="h-48 overflow-hidden">
                     <img
-                      src={`https://source.unsplash.com/${post.image}`}
+                      src={`https://source.unsplash.com/random/800x600?${post.category_slug || 'blog'}`}
                       alt={post.title}
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                     />
                   </div>
                   <CardHeader>
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-secondary">{post.category}</span>
-                      <span className="text-sm text-gray-500">{post.date}</span>
+                      <span className="text-sm text-secondary">
+                        {post.categories?.name || 'Uncategorized'}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {formatDate(post.created_at)}
+                      </span>
                     </div>
                     <CardTitle className="text-xl">{post.title}</CardTitle>
                     <CardDescription>{post.description}</CardDescription>
