@@ -22,7 +22,7 @@ const BlogPost = () => {
           )
         `)
         .eq('slug', slug)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -60,6 +60,7 @@ const BlogPost = () => {
         <Navigation />
         <div className="container mx-auto px-4 py-24 text-center">
           <h1 className="text-4xl font-bold mb-4">Blog Post Not Found</h1>
+          <p className="text-gray-600 mb-8">The blog post you're looking for doesn't exist or has been removed.</p>
           <Link to="/blog">
             <Button variant="outline">
               ← Back to Blog
