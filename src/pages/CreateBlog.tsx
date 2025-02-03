@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Category {
   id: number;
@@ -19,12 +20,49 @@ interface Category {
 
 const CreateBlog = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("# Start writing your blog post here...");
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // Check if user is authenticated
+    if (!user) {
+      toast.error("Please login to create a blog post");
+      navigate("/auth");
+      return;
+    }
+
+    // Check if user is admin
+    const checkAdminStatus = async () => {
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', user.id)
+        .single();
+
+      if (error) {
+        console.error('Error checking admin status:', error);
+        toast.error("Error checking permissions");
+        navigate("/blog");
+        return;
+      }
+
+      if (!profile?.is_admin) {
+        toast.error("Only admins can create blog posts");
+        navigate("/blog");
+        return;
+      }
+
+      setIsAdmin(true);
+    };
+
+    checkAdminStatus();
+  }, [user, navigate]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -45,16 +83,49 @@ const CreateBlog = () => {
       }
     };
 
-    fetchCategories();
-  }, []);
+    if (isAdmin) {
+      fetchCategories();
+    }
+  }, [isAdmin]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically make an API call to save the blog post
-    console.log("Blog post data:", { title, category, description, content });
-    toast.success("Blog post created successfully!");
-    navigate("/blog");
+    
+    if (!isAdmin) {
+      toast.error("Only admins can create blog posts");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      // Here you would typically make an API call to save the blog post
+      const { error } = await supabase
+        .from('blog_posts')
+        .insert([
+          {
+            title,
+            category_slug: category,
+            description,
+            content,
+            author_id: user?.id
+          }
+        ]);
+
+      if (error) throw error;
+
+      toast.success("Blog post created successfully!");
+      navigate("/blog");
+    } catch (error) {
+      console.error('Error creating blog post:', error);
+      toast.error('Failed to create blog post');
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (!user || !isAdmin) {
+    return null; // Don't render anything while checking permissions
+  }
 
   return (
     <div className="min-h-screen bg-primary">
@@ -126,8 +197,12 @@ const CreateBlog = () => {
               >
                 Cancel
               </Button>
-              <Button type="submit" className="bg-secondary text-white hover:bg-secondary/90">
-                Publish Post
+              <Button 
+                type="submit" 
+                className="bg-secondary text-white hover:bg-secondary/90"
+                disabled={isLoading}
+              >
+                {isLoading ? "Creating..." : "Publish Post"}
               </Button>
             </div>
           </form>

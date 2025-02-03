@@ -1,12 +1,27 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 import useMobile from "../hooks/use-mobile";
+import { toast } from "sonner";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useMobile();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast.success("Signed out successfully");
+      navigate("/");
+    } catch (error) {
+      toast.error("Error signing out");
+    }
+  };
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -16,7 +31,6 @@ const Navigation = () => {
     <Link to="/" className="flex items-center space-x-2">
       <div className="relative">
         <div className="text-2xl font-bold relative">
-          {/* First Leaf */}
           <motion.div
             className="absolute -top-1 -left-3 w-6 h-6 transform rotate-45"
             style={{
@@ -33,7 +47,6 @@ const Navigation = () => {
               ease: "easeInOut"
             }}
           />
-          {/* Second Leaf */}
           <motion.div
             className="absolute -top-2 left-1 w-5 h-5 transform -rotate-12"
             style={{
@@ -68,18 +81,29 @@ const Navigation = () => {
     { name: "Contact", path: "/contact" },
   ];
 
+  const authItems = user ? (
+    <Button onClick={handleSignOut} variant="outline">
+      Sign Out
+    </Button>
+  ) : (
+    <Link to="/auth">
+      <Button variant="secondary">Sign In</Button>
+    </Link>
+  );
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-primary/80 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Logo />
           
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex items-center space-x-4">
             {menuItems.map((item) => (
               <Link key={item.name} to={item.path} className="text-gray-800 hover:text-secondary">
                 {item.name}
               </Link>
             ))}
+            {authItems}
           </div>
 
           <div className="md:hidden">
@@ -94,10 +118,18 @@ const Navigation = () => {
         <div className="absolute top-16 left-0 right-0 bg-primary shadow-lg">
           <div className="flex flex-col space-y-2 p-4">
             {menuItems.map((item) => (
-              <Link key={item.name} to={item.path} className="text-gray-800 hover:text-secondary">
+              <Link 
+                key={item.name} 
+                to={item.path} 
+                className="text-gray-800 hover:text-secondary"
+                onClick={() => setIsOpen(false)}
+              >
                 {item.name}
               </Link>
             ))}
+            <div className="pt-2">
+              {authItems}
+            </div>
           </div>
         </div>
       )}

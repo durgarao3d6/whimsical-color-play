@@ -10,11 +10,17 @@ import Navigation from "@/components/Navigation";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, user } = useAuth();
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Redirect if already logged in
+  if (user) {
+    navigate("/blog");
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
