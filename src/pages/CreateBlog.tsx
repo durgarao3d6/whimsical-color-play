@@ -19,6 +19,7 @@ const CreateBlog = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("# Start writing your blog post here...");
@@ -83,6 +84,34 @@ const CreateBlog = () => {
     }
   }, [isAdmin]);
 
+  // Generate slug from title
+  useEffect(() => {
+    const generateSlug = async () => {
+      if (!title) {
+        setSlug("");
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .rpc('generate_slug', { title });
+
+        if (error) throw error;
+        setSlug(data);
+      } catch (error) {
+        console.error('Error generating slug:', error);
+        // Fallback to client-side slug generation if RPC fails
+        const fallbackSlug = title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+        setSlug(fallbackSlug);
+      }
+    };
+
+    generateSlug();
+  }, [title]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -91,10 +120,26 @@ const CreateBlog = () => {
       return;
     }
 
+    if (!slug) {
+      toast.error("Invalid title for slug generation");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      
+      // Check if slug already exists
+      const { data: existingPost } = await supabase
+        .from('blog_posts')
+        .select('slug')
+        .eq('slug', slug)
+        .maybeSingle();
+
+      if (existingPost) {
+        toast.error("A post with this title already exists. Please modify the title.");
+        setIsLoading(false);
+        return;
+      }
+
       const { error } = await supabase
         .from('blog_posts')
         .insert([{
@@ -109,7 +154,7 @@ const CreateBlog = () => {
       if (error) throw error;
 
       toast.success("Blog post created successfully!");
-      navigate("/blog");
+      navigate(`/blog/${slug}`);
     } catch (error) {
       console.error('Error creating blog post:', error);
       toast.error('Failed to create blog post');
@@ -142,6 +187,11 @@ const CreateBlog = () => {
                 placeholder="Enter post title"
                 required
               />
+              {slug && (
+                <p className="text-sm text-muted-foreground">
+                  URL: /blog/{slug}
+                </p>
+              )}
             </div>
             
             <div className="space-y-2">
