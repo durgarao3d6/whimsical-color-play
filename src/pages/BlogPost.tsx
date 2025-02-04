@@ -6,9 +6,13 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEffect, useState } from "react";
 
 const BlogPost = () => {
   const { slug } = useParams();
+  const { user } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
   
   const { data: post, isLoading } = useQuery({
     queryKey: ['blog-post', slug],
@@ -28,6 +32,22 @@ const BlogPost = () => {
       return data;
     },
   });
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (!user) return;
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', user.id)
+        .single();
+
+      setIsAdmin(!!profile?.is_admin);
+    };
+
+    checkAdminStatus();
+  }, [user]);
 
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
@@ -80,11 +100,20 @@ const BlogPost = () => {
         animate={{ opacity: 1, y: 0 }}
         className="container mx-auto px-4 py-24"
       >
-        <Link to="/blog">
-          <Button variant="outline" className="mb-8">
-            ← Back to Blog
-          </Button>
-        </Link>
+        <div className="flex justify-between items-center mb-8">
+          <Link to="/blog">
+            <Button variant="outline">
+              ← Back to Blog
+            </Button>
+          </Link>
+          {isAdmin && (
+            <Link to={`/blog/${slug}/edit`}>
+              <Button className="bg-secondary text-white hover:bg-secondary/90">
+                Edit Post
+              </Button>
+            </Link>
+          )}
+        </div>
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <img
