@@ -6,6 +6,7 @@ import BlogPost from "@/pages/BlogPost";
 import CreateBlog from "@/pages/CreateBlog";
 import EditBlog from "@/pages/EditBlog";
 import ProjectDemo from "@/pages/ProjectDemo";
+import AdminDashboard from "@/pages/AdminDashboard";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -25,6 +26,7 @@ function App() {
             <Route path="/blog/create" element={<CreateBlog />} />
             <Route path="/blog/:slug/edit" element={<EditBlog />} />
             <Route path="/project-demo" element={<ProjectDemo />} />
+            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
           <Toaster />
         </Router>

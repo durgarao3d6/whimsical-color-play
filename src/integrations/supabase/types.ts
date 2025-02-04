@@ -74,6 +74,35 @@ export type Database = {
         }
         Relationships: []
       }
+      post_views: {
+        Row: {
+          id: number
+          ip_address: string
+          post_slug: string | null
+          viewed_at: string | null
+        }
+        Insert: {
+          id?: number
+          ip_address: string
+          post_slug?: string | null
+          viewed_at?: string | null
+        }
+        Update: {
+          id?: number
+          ip_address?: string
+          post_slug?: string | null
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_views_post_slug_fkey"
+            columns: ["post_slug"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string | null

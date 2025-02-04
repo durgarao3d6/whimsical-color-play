@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 import MDEditor from '@uiw/react-md-editor';
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
+import { useEffect } from "react";
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -48,6 +49,30 @@ const BlogPost = () => {
     },
     enabled: !!slug,
   });
+
+  const recordView = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('https://api.ipify.org?format=json');
+      const { ip } = await response.json();
+      
+      const { error } = await supabase
+        .from('post_views')
+        .insert([
+          {
+            post_slug: slug,
+            ip_address: ip
+          }
+        ]);
+      
+      if (error) throw error;
+    }
+  });
+
+  useEffect(() => {
+    if (slug && !isLoading && post) {
+      recordView.mutate();
+    }
+  }, [slug, isLoading, post]);
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '';
