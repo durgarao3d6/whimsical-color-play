@@ -29,6 +29,8 @@ const BlogPost = () => {
   const { data: post, isLoading } = useQuery({
     queryKey: ['blog-post', slug],
     queryFn: async () => {
+      if (!slug) throw new Error('No slug provided');
+      
       const { data, error } = await supabase
         .from('blog_posts')
         .select(`
@@ -41,8 +43,10 @@ const BlogPost = () => {
         .maybeSingle();
 
       if (error) throw error;
+      if (!data) throw new Error('Post not found');
       return data;
     },
+    enabled: !!slug,
   });
 
   const formatDate = (dateString: string | null) => {
@@ -130,16 +134,6 @@ const BlogPost = () => {
           <p className="text-xl text-gray-600 mb-8">{post.description}</p>
           <div 
             className="prose prose-lg max-w-none p-8 rounded-xl backdrop-blur-lg bg-white/10 shadow-xl border border-white/20" 
-            style={{
-              background: `linear-gradient(109.6deg, rgba(230, 244, 234, 0.5) 11.2%, rgba(244, 252, 248, 0.5) 91.1%)`,
-              backgroundImage: `
-                linear-gradient(109.6deg, rgba(230, 244, 234, 0.5) 11.2%, rgba(244, 252, 248, 0.5) 91.1%),
-                url(https://source.unsplash.com/photo-1513836279014-a89f7a76ae86)
-              `,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundBlendMode: 'soft-light'
-            }}
             data-color-mode="light"
           >
             <MDEditor.Markdown 

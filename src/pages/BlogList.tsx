@@ -59,7 +59,10 @@ const BlogList = () => {
                   <Skeleton className="h-full w-full" />
                 </div>
                 <CardHeader>
-                  <Skeleton className="h-4 w-20 mb-2" />
+                  <div className="flex justify-between items-center mb-2">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-24" />
+                  </div>
                   <Skeleton className="h-6 w-full mb-2" />
                   <Skeleton className="h-4 w-3/4" />
                 </CardHeader>
