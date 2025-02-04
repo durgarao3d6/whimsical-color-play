@@ -41,6 +41,8 @@ const EditBlog = () => {
   const { data: post, isLoading: isLoadingPost } = useQuery({
     queryKey: ['blog-post', slug],
     queryFn: async () => {
+      if (!slug) throw new Error('No slug provided');
+
       const { data, error } = await supabase
         .from('blog_posts')
         .select(`
@@ -53,8 +55,10 @@ const EditBlog = () => {
         .maybeSingle();
 
       if (error) throw error;
+      if (!data) throw new Error('Post not found');
       return data;
     },
+    enabled: !!slug,
   });
 
   // Check admin status
@@ -95,6 +99,11 @@ const EditBlog = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!slug) {
+      toast.error("Invalid blog post");
+      return;
+    }
+
     setIsLoading(true);
     try {
       const { error } = await supabase

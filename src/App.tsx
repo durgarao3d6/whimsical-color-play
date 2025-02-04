@@ -1,37 +1,36 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Index from "@/pages/Index";
+import Auth from "@/pages/Auth";
+import BlogList from "@/pages/BlogList";
+import BlogPost from "@/pages/BlogPost";
+import CreateBlog from "@/pages/CreateBlog";
+import EditBlog from "@/pages/EditBlog";
+import ProjectDemo from "@/pages/ProjectDemo";
+import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
-import Index from "./pages/Index";
-import ProjectDemo from "./pages/ProjectDemo";
-import CreateBlog from "./pages/CreateBlog";
-import BlogList from "./pages/BlogList";
-import BlogPost from "./pages/BlogPost";
-import Auth from "./pages/Auth";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Router>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/project-demo" element={<ProjectDemo />} />
-            <Route path="/blog/create" element={<CreateBlog />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/auth" element={<Auth />} />
+            <Route path="/blog/create" element={<CreateBlog />} />
+            <Route path="/blog/:slug/edit" element={<EditBlog />} />
+            <Route path="/project-demo" element={<ProjectDemo />} />
           </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </AuthProvider>
-  </QueryClientProvider>
-);
+          <Toaster />
+        </Router>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;
