@@ -7,13 +7,25 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
-import { useEffect, useState } from "react";
 
 const BlogPost = () => {
   const { slug } = useParams();
   const { user } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
   
+  const { data: profile } = useQuery({
+    queryKey: ['profile', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return null;
+      const { data } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', user.id)
+        .maybeSingle();
+      return data;
+    },
+    enabled: !!user?.id,
+  });
+
   const { data: post, isLoading } = useQuery({
     queryKey: ['blog-post', slug],
     queryFn: async () => {
@@ -33,23 +45,7 @@ const BlogPost = () => {
     },
   });
 
-  useEffect(() => {
-    const checkAdminStatus = async () => {
-      if (!user) return;
-
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('is_admin')
-        .eq('id', user.id)
-        .single();
-
-      setIsAdmin(!!profile?.is_admin);
-    };
-
-    checkAdminStatus();
-  }, [user]);
-
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | null) => {
     if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -106,8 +102,8 @@ const BlogPost = () => {
               ← Back to Blog
             </Button>
           </Link>
-          {isAdmin && (
-            <Link to={`/blog/${slug}/edit`}>
+          {profile?.is_admin && (
+            <Link to={`/blog/${post.slug}/edit`}>
               <Button className="bg-secondary text-white hover:bg-secondary/90">
                 Edit Post
               </Button>

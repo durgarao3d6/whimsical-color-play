@@ -17,6 +17,7 @@ const BlogList = () => {
           id,
           title,
           description,
+          slug,
           created_at,
           category_slug,
           categories (
@@ -52,7 +53,6 @@ const BlogList = () => {
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {isLoading ? (
-            // Loading skeletons
             [...Array(6)].map((_, index) => (
               <Card key={index} className="overflow-hidden h-full">
                 <div className="h-48">
@@ -74,7 +74,7 @@ const BlogList = () => {
               whileHover={{ y: -10 }}
               transition={{ duration: 0.2 }}
             >
-              <Link to={`/blog/${post.id}`}>
+              <Link to={`/blog/${post.slug}`}>
                 <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow">
                   <div className="h-48 overflow-hidden">
                     <img
