@@ -18,6 +18,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { ClipboardList, BarChart, Users } from "lucide-react";
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -106,23 +107,36 @@ const AdminDashboard = () => {
       <div className="container mx-auto px-4 py-24">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-secondary">Admin Dashboard</h1>
-          <Button onClick={() => navigate('/admin/tasks/new')}>Create New Task</Button>
+          <Button 
+            onClick={() => navigate('/admin/tasks/new')}
+            className="bg-secondary hover:bg-secondary/90 transition-colors animate-fade-in"
+          >
+            <ClipboardList className="mr-2 h-4 w-4" />
+            Create New Task
+          </Button>
         </div>
         
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="tasks">Tasks</TabsTrigger>
+          <TabsList className="bg-accent">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-secondary data-[state=active]:text-white">
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="tasks" className="data-[state=active]:bg-secondary data-[state=active]:text-white">
+              Tasks
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
+          <TabsContent value="overview" className="space-y-6 animate-fade-in">
             <div className="grid md:grid-cols-2 gap-6">
-              <Card>
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle>Total Posts</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <BarChart className="mr-2 h-5 w-5 text-secondary" />
+                    Total Posts
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold">
+                  <p className="text-4xl font-bold text-secondary">
                     {isLoadingStats ? (
                       <Skeleton className="h-10 w-20" />
                     ) : (
@@ -132,12 +146,15 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
               
-              <Card>
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle>Total Views</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <Users className="mr-2 h-5 w-5 text-secondary" />
+                    Total Views
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold">
+                  <p className="text-4xl font-bold text-secondary">
                     {isLoadingStats ? (
                       <Skeleton className="h-10 w-20" />
                     ) : (
@@ -148,7 +165,7 @@ const AdminDashboard = () => {
               </Card>
             </div>
 
-            <Card>
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle>Task Status Distribution</CardTitle>
               </CardHeader>
@@ -168,6 +185,7 @@ const AdminDashboard = () => {
                         cy="50%"
                         outerRadius={80}
                         label
+                        className="animate-fade-in"
                       >
                         {taskStats?.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={entry.color} />
@@ -181,7 +199,7 @@ const AdminDashboard = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle>Post Statistics</CardTitle>
               </CardHeader>
@@ -205,7 +223,7 @@ const AdminDashboard = () => {
                       ))
                     ) : (
                       blogStats?.postStats.map((post) => (
-                        <TableRow key={post.slug}>
+                        <TableRow key={post.slug} className="hover:bg-primary/5 transition-colors">
                           <TableCell className="font-medium">{post.title}</TableCell>
                           <TableCell>
                             {new Date(post.created_at).toLocaleDateString()}
@@ -220,7 +238,7 @@ const AdminDashboard = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="tasks">
+          <TabsContent value="tasks" className="animate-fade-in">
             <TaskList />
           </TabsContent>
         </Tabs>
