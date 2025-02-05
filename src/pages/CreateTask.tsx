@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import Navigation from "@/components/Navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2, ArrowLeft } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -37,7 +38,7 @@ const CreateTask = () => {
       title,
       description,
       priority,
-      due_date: dueDate?.toISOString(), // Convert Date to ISO string
+      due_date: dueDate?.toISOString(),
       created_by: user.id,
     });
 
@@ -60,9 +61,21 @@ const CreateTask = () => {
   };
 
   return (
-    <div className="min-h-screen bg-primary p-8">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 animate-fade-in">
-        <h1 className="text-3xl font-bold text-secondary mb-8">Create New Task</h1>
+    <div className="min-h-screen bg-primary">
+      <Navigation />
+      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 mt-24 animate-fade-in">
+        <div className="flex items-center mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/admin")}
+            className="mr-4"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+          <h1 className="text-3xl font-bold text-secondary">Create New Task</h1>
+        </div>
+        
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium mb-2">Title</label>
