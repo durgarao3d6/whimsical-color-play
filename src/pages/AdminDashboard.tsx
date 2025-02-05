@@ -16,6 +16,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -64,6 +66,30 @@ const AdminDashboard = () => {
     enabled: !!profile?.is_admin,
   });
 
+  const { data: taskStats, isLoading: isLoadingTaskStats } = useQuery({
+    queryKey: ['task-stats'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('tasks')
+        .select('status');
+      
+      if (error) throw error;
+
+      const stats = {
+        completed: data.filter(task => task.status === 'completed').length,
+        inProgress: data.filter(task => task.status === 'in_progress').length,
+        pending: data.filter(task => task.status === 'pending').length,
+      };
+
+      return [
+        { name: 'Completed', value: stats.completed, color: '#34a853' },
+        { name: 'In Progress', value: stats.inProgress, color: '#fbbc05' },
+        { name: 'Pending', value: stats.pending, color: '#ea4335' },
+      ];
+    },
+    enabled: !!profile?.is_admin,
+  });
+
   useEffect(() => {
     if (profile && !profile.is_admin) {
       navigate('/');
@@ -78,7 +104,10 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-primary">
       <Navigation />
       <div className="container mx-auto px-4 py-24">
-        <h1 className="text-4xl font-bold mb-8 text-secondary">Admin Dashboard</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-secondary">Admin Dashboard</h1>
+          <Button onClick={() => navigate('/admin/tasks/new')}>Create New Task</Button>
+        </div>
         
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList>
@@ -118,6 +147,39 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
             </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Task Status Distribution</CardTitle>
+              </CardHeader>
+              <CardContent className="h-[300px]">
+                {isLoadingTaskStats ? (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Skeleton className="h-full w-full" />
+                  </div>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={taskStats}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        label
+                      >
+                        {taskStats?.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                )}
+              </CardContent>
+            </Card>
 
             <Card>
               <CardHeader>
