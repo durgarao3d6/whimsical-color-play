@@ -37,7 +37,7 @@ const CreateTask = () => {
       title,
       description,
       priority,
-      due_date: dueDate,
+      due_date: dueDate?.toISOString(), // Convert Date to ISO string
       created_by: user.id,
     });
 
