@@ -6,12 +6,29 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import useMobile from "../hooks/use-mobile";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useMobile();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+
+  // Fetch admin status
+  const { data: profile } = useQuery({
+    queryKey: ['profile', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return null;
+      const { data } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', user.id)
+        .single();
+      return data;
+    },
+    enabled: !!user?.id,
+  });
 
   const handleSignOut = async () => {
     try {
@@ -79,6 +96,7 @@ const Navigation = () => {
     { name: "Projects", path: "/projects" },
     { name: "Blog", path: "/blog" },
     { name: "Contact", path: "/contact" },
+    ...(profile?.is_admin ? [{ name: "Admin", path: "/admin" }] : []),
   ];
 
   const authItems = user ? (
