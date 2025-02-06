@@ -127,42 +127,6 @@ export type Database = {
         }
         Relationships: []
       }
-      projects: {
-        Row: {
-          created_at: string | null
-          created_by: string | null
-          demo_url: string | null
-          description: string | null
-          github_url: string | null
-          id: number
-          image_url: string | null
-          title: string
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          created_by?: string | null
-          demo_url?: string | null
-          description?: string | null
-          github_url?: string | null
-          id?: number
-          image_url?: string | null
-          title: string
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by?: string | null
-          demo_url?: string | null
-          description?: string | null
-          github_url?: string | null
-          id?: number
-          image_url?: string | null
-          title?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       tasks: {
         Row: {
           assigned_to: string | null
