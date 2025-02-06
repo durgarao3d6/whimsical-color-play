@@ -7,12 +7,23 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import ImageUpload from "@/components/ImageUpload";
+import { Badge } from "@/components/ui/badge";
+import { X } from "lucide-react";
+
+const COMMON_TECH_STACK = [
+  "React", "TypeScript", "JavaScript", "Node.js", "Python",
+  "Vue.js", "Angular", "Next.js", "Express", "MongoDB",
+  "PostgreSQL", "MySQL", "Redis", "Docker", "AWS",
+  "Firebase", "Supabase", "GraphQL", "REST API", "TailwindCSS"
+];
 
 const CreateProject = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const [newTech, setNewTech] = useState("");
+  const [techStack, setTechStack] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -36,12 +47,13 @@ const CreateProject = () => {
         demo_url: formData.demoUrl,
         image_url: imageUrl,
         created_by: user.id,
+        tech_stack: techStack,
       });
 
       if (error) throw error;
 
       toast.success("Project created successfully!");
-      navigate("/");
+      navigate("/projects");
     } catch (error) {
       console.error("Error creating project:", error);
       toast.error("Failed to create project");
@@ -57,12 +69,23 @@ const CreateProject = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const addTechStack = (tech: string) => {
+    if (tech && !techStack.includes(tech)) {
+      setTechStack([...techStack, tech]);
+      setNewTech("");
+    }
+  };
+
+  const removeTechStack = (tech: string) => {
+    setTechStack(techStack.filter((t) => t !== tech));
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Create New Project</h1>
-      <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium mb-2">
+    <div className="container max-w-2xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8 text-center">Create New Project</h1>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-2">
+          <label htmlFor="title" className="block text-sm font-medium">
             Title
           </label>
           <Input
@@ -71,11 +94,12 @@ const CreateProject = () => {
             value={formData.title}
             onChange={handleChange}
             required
+            className="w-full"
           />
         </div>
 
-        <div>
-          <label htmlFor="description" className="block text-sm font-medium mb-2">
+        <div className="space-y-2">
+          <label htmlFor="description" className="block text-sm font-medium">
             Description
           </label>
           <Textarea
@@ -84,11 +108,12 @@ const CreateProject = () => {
             value={formData.description}
             onChange={handleChange}
             required
+            className="min-h-[120px]"
           />
         </div>
 
-        <div>
-          <label htmlFor="githubUrl" className="block text-sm font-medium mb-2">
+        <div className="space-y-2">
+          <label htmlFor="githubUrl" className="block text-sm font-medium">
             GitHub URL
           </label>
           <Input
@@ -97,11 +122,12 @@ const CreateProject = () => {
             type="url"
             value={formData.githubUrl}
             onChange={handleChange}
+            className="w-full"
           />
         </div>
 
-        <div>
-          <label htmlFor="demoUrl" className="block text-sm font-medium mb-2">
+        <div className="space-y-2">
+          <label htmlFor="demoUrl" className="block text-sm font-medium">
             Demo URL
           </label>
           <Input
@@ -110,11 +136,69 @@ const CreateProject = () => {
             type="url"
             value={formData.demoUrl}
             onChange={handleChange}
+            className="w-full"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-2">Project Image</label>
+        <div className="space-y-4">
+          <label className="block text-sm font-medium">Tech Stack</label>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {techStack.map((tech) => (
+              <Badge
+                key={tech}
+                variant="secondary"
+                className="flex items-center gap-1"
+              >
+                {tech}
+                <button
+                  type="button"
+                  onClick={() => removeTechStack(tech)}
+                  className="ml-1 hover:text-destructive"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </Badge>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <Input
+              value={newTech}
+              onChange={(e) => setNewTech(e.target.value)}
+              placeholder="Add technology..."
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  addTechStack(newTech);
+                }
+              }}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => addTechStack(newTech)}
+            >
+              Add
+            </Button>
+          </div>
+          <div className="mt-2">
+            <p className="text-sm text-muted-foreground mb-2">Common technologies:</p>
+            <div className="flex flex-wrap gap-2">
+              {COMMON_TECH_STACK.map((tech) => (
+                <Badge
+                  key={tech}
+                  variant="outline"
+                  className="cursor-pointer hover:bg-secondary/20"
+                  onClick={() => addTechStack(tech)}
+                >
+                  {tech}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-medium">Project Image</label>
           <ImageUpload onUploadComplete={setImageUrl} />
           {imageUrl && (
             <img
@@ -125,9 +209,11 @@ const CreateProject = () => {
           )}
         </div>
 
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Creating..." : "Create Project"}
-        </Button>
+        <div className="flex justify-end pt-6">
+          <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
+            {isSubmitting ? "Creating..." : "Create Project"}
+          </Button>
+        </div>
       </form>
     </div>
   );
