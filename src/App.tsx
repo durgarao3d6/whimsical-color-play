@@ -11,6 +11,7 @@ import BlogPost from "./pages/BlogPost";
 import CreateBlog from "./pages/CreateBlog";
 import EditBlog from "./pages/EditBlog";
 import CreateTask from "./pages/CreateTask";
+import Projects from "./pages/Projects";
 import CreateProject from "./pages/CreateProject";
 import "./App.css";
 
@@ -37,6 +38,7 @@ function App() {
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/blog/create" element={<CreateBlog />} />
             <Route path="/blog/:slug/edit" element={<EditBlog />} />
+            <Route path="/projects" element={<Projects />} />
             <Route path="/projects/create" element={<CreateProject />} />
           </Routes>
           <Toaster />
