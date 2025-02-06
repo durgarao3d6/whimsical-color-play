@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import { Image } from "lucide-react";
 
 const Navigation = () => {
   const { user, signOut } = useAuth();
@@ -10,8 +11,9 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-8">
-            <Link to="/" className="text-xl font-bold text-secondary">
-              Portfolio
+            <Link to="/" className="flex items-center space-x-2">
+              <Image className="w-8 h-8 text-secondary" />
+              <span className="text-xl font-bold text-secondary">VDL</span>
             </Link>
             <div className="hidden md:flex items-center space-x-4">
               <Link to="/blog" className="text-gray-600 hover:text-secondary">
