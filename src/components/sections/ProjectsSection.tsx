@@ -1,7 +1,23 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import ImageUpload from "../ImageUpload";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ProjectsSection = () => {
+  const { user } = useAuth();
+  const [projectImages, setProjectImages] = useState<Record<number, string>>({
+    1: "https://source.unsplash.com/random/800x600?coding",
+    2: "https://source.unsplash.com/random/800x600?technology"
+  });
+
+  const handleImageUpload = (projectId: number) => (url: string) => {
+    setProjectImages(prev => ({
+      ...prev,
+      [projectId]: url
+    }));
+  };
+
   return (
     <section id="projects" className="py-20">
       <motion.div
@@ -17,6 +33,18 @@ const ProjectsSection = () => {
               whileHover={{ y: -10 }}
               className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
+              <div className="mb-4 overflow-hidden rounded-lg h-48">
+                <img
+                  src={projectImages[project]}
+                  alt={`Project ${project}`}
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                />
+              </div>
+              {user && (
+                <div className="mb-4">
+                  <ImageUpload onUploadComplete={handleImageUpload(project)} />
+                </div>
+              )}
               <h3 className="text-2xl font-bold mb-4">Project {project}</h3>
               <p className="text-gray-600 mb-4">
                 A brief description of the project and the technologies used.
